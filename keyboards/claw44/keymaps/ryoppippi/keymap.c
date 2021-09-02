@@ -51,11 +51,15 @@ enum layer_number {
 // cmd_t
 #define KC_G_G LGUI_T(KC_G)
 #define KC_G_H LGUI_T(KC_H)
+#define KC_G_F LGUI_T(KC_F)
+#define KC_G_J LGUI_T(KC_J)
 
 // ctl_t
 #define KC_C_BS LCTL_T(KC_BSPC)  // ctrl
+#define KC_C_G LCTL_T(KC_G)
+#define KC_C_H LCTL_T(KC_H)
 #define KC_C_F LCTL_T(KC_F)
-#define KC_C_J RCTL_T(KC_J)
+#define KC_C_J LCTL_T(KC_J)
 
 // alt_t
 #define KC_A_DEL ALT_T(KC_DEL)  // alt
