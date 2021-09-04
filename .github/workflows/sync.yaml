@@ -4,8 +4,8 @@ on:
   schedule:
     - cron:  '10 */1 * * *'
   push:
-    # paths:
-    #   - '.github/workflows/sync.yaml'
+    paths:
+      - '.github/workflows/sync.yaml'
 
 jobs:
   merge:
