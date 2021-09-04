@@ -45,6 +45,8 @@ int tp_buttons;
 
 #if defined(RETRO_TAPPING) || defined(RETRO_TAPPING_PER_KEY)
 int retro_tapping_counter = 0;
+#    include "quantum.h"
+uint16_t retro_tapping_start_time;
 #endif
 
 #ifdef IGNORE_MOD_TAP_INTERRUPT_PER_KEY
@@ -52,7 +54,8 @@ __attribute__((weak)) bool get_ignore_mod_tap_interrupt(uint16_t keycode, keyrec
 #endif
 
 #ifdef RETRO_TAPPING_PER_KEY
-__attribute__((weak)) bool get_retro_tapping(uint16_t keycode, keyrecord_t *record) { return false; }
+__attribute__((weak)) bool     get_retro_tapping(uint16_t keycode, keyrecord_t *record) { return false; }
+__attribute__((weak)) uint16_t get_retro_tapping_term(uint16_t keycode, keyrecord_t *record) { return 0; }
 #endif
 
 __attribute__((weak)) bool pre_process_record_quantum(keyrecord_t *record) { return true; }
@@ -81,6 +84,9 @@ void action_exec(keyevent_t event) {
     if (event.pressed) {
         // clear the potential weak mods left by previously pressed keys
         clear_weak_mods();
+#if defined(RETRO_TAPPING) || defined(RETRO_TAPPING_PER_KEY)
+        retro_tapping_start_time = event.time;
+#endif
     }
 
 #ifdef SWAP_HANDS_ENABLE
@@ -712,6 +718,11 @@ void process_action(keyrecord_t *record, action_t action) {
                 if (
 #        ifdef RETRO_TAPPING_PER_KEY
                     get_retro_tapping(get_event_keycode(record->event, false), record) &&
+#        endif
+#        if RETRO_TAPPING
+                    (TIMER_DIFF_16(event.time, retro_tapping_start_time) < (RETRO_TAPPING + 0)) &&
+#        elif defined(RETRO_TAPPING_PER_KEY)
+                    (!get_retro_tapping_term(get_event_keycode(record->event, false), record) || TIMER_DIFF_16(event.time, retro_tapping_start_time) < get_retro_tapping_term(get_event_keycode(record->event, false), record)) &&
 #        endif
                     retro_tapping_counter == 2) {
                     tap_code(action.layer_tap.code);
