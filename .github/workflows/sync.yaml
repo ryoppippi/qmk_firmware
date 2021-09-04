@@ -1,0 +1,33 @@
+name: Rebase upstream branches
+
+on:
+  schedule:
+    - cron:  '10 */1 * * *'
+  push:
+    # paths:
+    #   - '.github/workflows/sync.yaml'
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target_branch: [master]
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          token: ${{secrets.ACCESS_TOKEN}}
+          fetch-depth: 100
+      - name: Rebase upstream
+        run: |
+          git config --global user.name github-actions
+          git config --global user.email github-actions@github.com
+          git config --global pull.rebase merges
+          git pull --unshallow
+          git remote add upstream ${REPO_FORK}
+          git fetch upstream
+          git rebase upstream/$TARGET_BRANCH
+          git push --force-with-lease origin $TARGET_BRANCH:$TARGET_BRANCH
+        env:
+          REPO_FORK: https://github.com/qmk/qmk_firmware.git
+          TARGET_BRANCH: ${{ matrix.target_branch }}
