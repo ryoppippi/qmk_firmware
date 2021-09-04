@@ -81,5 +81,5 @@ fi
 	-e ALT_GET_KEYBOARDS=true \
 	-e SKIP_GIT="$SKIP_GIT" \
 	-e MAKEFLAGS="$MAKEFLAGS" \
-	ryoppippi/base_container:202108-fda64d1 \
+	ryoppippi/qmk_cli:latest \
 	make "$keyboard${keymap:+:$keymap}${target:+:$target}"
