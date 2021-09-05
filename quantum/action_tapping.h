@@ -39,4 +39,5 @@ bool     get_permissive_hold(uint16_t keycode, keyrecord_t *record);
 bool     get_ignore_mod_tap_interrupt(uint16_t keycode, keyrecord_t *record);
 bool     get_tapping_force_hold(uint16_t keycode, keyrecord_t *record);
 bool     get_retro_tapping(uint16_t keycode, keyrecord_t *record);
+bool     get_retro_tapping_term(uint16_t keycode, keyrecord_t *record);
 #endif
