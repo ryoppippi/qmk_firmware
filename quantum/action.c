@@ -719,7 +719,7 @@ void process_action(keyrecord_t *record, action_t action) {
 #        ifdef RETRO_TAPPING_PER_KEY
                     get_retro_tapping(get_event_keycode(record->event, false), record) &&
 #        endif
-#        if RETRO_TAPPING
+#        if defined(RETRO_TAPPING) && RETRO_TAPPING
                     (TIMER_DIFF_16(event.time, retro_tapping_start_time) < (RETRO_TAPPING + 0)) &&
 #        elif defined(RETRO_TAPPING_PER_KEY)
                     (!get_retro_tapping_term(get_event_keycode(record->event, false), record) || TIMER_DIFF_16(event.time, retro_tapping_start_time) < get_retro_tapping_term(get_event_keycode(record->event, false), record)) &&
