@@ -45,6 +45,9 @@ int tp_buttons;
 
 #if defined(RETRO_TAPPING) || defined(RETRO_TAPPING_PER_KEY)
 int retro_tapping_counter = 0;
+#endif
+
+#if defined(RETRO_TAPPING_TERM) || defined(RETRO_TAPPING_TERM_PER_KEY)
 #    include "quantum.h"
 uint16_t retro_tapping_start_time;
 #endif
@@ -54,7 +57,10 @@ __attribute__((weak)) bool get_ignore_mod_tap_interrupt(uint16_t keycode, keyrec
 #endif
 
 #ifdef RETRO_TAPPING_PER_KEY
-__attribute__((weak)) bool     get_retro_tapping(uint16_t keycode, keyrecord_t *record) { return false; }
+__attribute__((weak)) bool get_retro_tapping(uint16_t keycode, keyrecord_t *record) { return false; }
+#endif
+
+#ifdef RETRO_TAPPING_TERM_PER_KEY
 __attribute__((weak)) uint16_t get_retro_tapping_term(uint16_t keycode, keyrecord_t *record) { return 0; }
 #endif
 
@@ -719,9 +725,9 @@ void process_action(keyrecord_t *record, action_t action) {
 #        ifdef RETRO_TAPPING_PER_KEY
                     get_retro_tapping(get_event_keycode(record->event, false), record) &&
 #        endif
-#        if RETRO_TAPPING
-                    (TIMER_DIFF_16(event.time, retro_tapping_start_time) < (RETRO_TAPPING + 0)) &&
-#        elif defined(RETRO_TAPPING_PER_KEY)
+#        if defined(RETRO_TAPPING_TERM) && RETRO_TAPPING_TERM
+                    (TIMER_DIFF_16(event.time, retro_tapping_start_time) < (RETRO_TAPPING_TERM + 0)) &&
+#        elif defined(RETRO_TAPPING_TERM_PER_KEY)
                     (!get_retro_tapping_term(get_event_keycode(record->event, false), record) || TIMER_DIFF_16(event.time, retro_tapping_start_time) < get_retro_tapping_term(get_event_keycode(record->event, false), record)) &&
 #        endif
                     retro_tapping_counter == 2) {
