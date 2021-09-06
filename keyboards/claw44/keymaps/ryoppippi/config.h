@@ -21,8 +21,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define MASTER_LEFT
 
 #define TAPPING_TERM 180
-#define RETRO_TAPPING 1000
+#define RETRO_TAPPING
+#define RETRO_TAPPING_TERM 1000
+#define TAPPING_TERM_PER_KEY
 // #define PERMISSIVE_HOLD_PER_KEY
 #define IGNORE_MOD_TAP_INTERRUPT
-#define TAPPING_TERM_PER_KEY
 
